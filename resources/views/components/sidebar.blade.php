@@ -9,13 +9,20 @@
     <ul class="sidebar-menu">
       <li class="menu-header">Dashboard</li>
       <li class="nav-item {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-        <a href="/data-hutang" class="nav-link "><i class="fas fa-fire"></i><span>Dashboard</span></a>
+        <a href="/" class="nav-link "><i class="fas fa-fire"></i><span>Dashboard</span></a>
       </li>
       <ul class="sidebar-menu">
         <li class="menu-header">Data Hutang</li>
         <li class="nav-item {{ $type_menu === 'dashboard' ? 'active' : '' }}">
           <a href="/data-hutang" class="nav-link "><i class="fas fa-fire"></i><span>Data Hutang $</span></a>
         </li>
+      </ul>
+      <ul class="sidebar-menu">
+        <li class="menu-header">Data Hutang</li>
+        <li class="nav-item {{ $type_menu === 'dashboard' ? 'active' : '' }}">
+          <a href="/data-pembayaran" class="nav-link "><i class="fas fa-fire"></i><span>Data pembayaran$</span></a>
+        </li>
+      </ul>
 
 
   </aside>
