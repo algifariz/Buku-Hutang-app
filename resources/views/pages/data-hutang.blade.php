@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Status Guru')
+@section('title', $title)
 
 @push('style')
   <!-- CSS Libraries -->

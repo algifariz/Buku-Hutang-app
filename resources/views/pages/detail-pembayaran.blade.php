@@ -71,7 +71,7 @@
                               <input type="hidden" name="nama_pelanggan" value="{{ $hutang->nama_pelanggan }}">
                               <input type="hidden" name="tanggal" value="{{ $hutang->tanggal }}">
                               <input type="hidden" name="jumlah_hutang" value="{{ $hutang->jumlah_hutang }}">
-                              <a href="/" class="btn btn-warning">Bayar</a>
+                              <a href="/edit-data-pembayaran/{{ $hutang->id }}" class="btn btn-warning">Bayar</a>
                               <button type="submit" class="btn btn-primary">Bayar Lunas</button>
                             </form>
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Status Guru')
+@section('title', $title)
 
 @push('style')
   <!-- CSS Libraries -->
@@ -28,7 +28,6 @@
             <div class="card">
               <div class="card-header">
 
-
                 <table class="table-sm table">
                   <thead>
                     <tr>
@@ -39,37 +38,29 @@
                       <th scope="col">action</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    @foreach ($data_hutang as $hutang)
-                      {{-- Group by name --}}
-                      @if ($loop->first || $hutang->nama_pelanggan != $data_hutang[$loop->index - 1]->nama_pelanggan)
-                        <tr>
-                          <td>{{ $loop->iteration }}</td>
-                          <td>{{ $hutang->kode_pelanggan }}</td>
-                          <td>{{ $hutang->nama_pelanggan }}</td>
-                          {{-- sum jumlah hutang group by name and status="Belum Lunas" --}}
-                          <td>Rp
-                            {{ number_format($data_hutang->where('nama_pelanggan', $hutang->nama_pelanggan)->where('status', 'Belum Lunas')->sum('jumlah_hutang'),0,',','.') }}
-                          </td>
-                          <td>
-                            <a href="/detail-pembayaran/{{ $hutang->nama_pelanggan }}"
-                              class="btn btn-icon icon-left btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></i>
-                              detail
-                            </a>
 
-                          </td>
-                          {{-- <td>
-                          <form action="/hapus-hutang/{{ $hutang->id }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" onclick="return confirm('Yakin ingin menghapus data ini?')"
-                              class="btn btn-icon icon-left btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></i>
-                            </button>
-                          </form>
-                        </td> --}}
-                        </tr>
-                      @endif
+                  <tbody>
+                    @foreach ($data_hutang as $key => $value)
+                      <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        @foreach ($value as $item)
+                          @if ($loop->first)
+                            <td>{{ $item->kode_pelanggan }}</td>
+                            <td>{{ $item->nama_pelanggan }}</td>
+                            <td>IDR {{ number_format($value->sum('jumlah_hutang'), 0, ',', '.') }}</td>
+                            <td>
+                              <a href="/detail-pembayaran/{{ $item->nama_pelanggan }}"
+                                class="btn btn-icon icon-left btn-primary"><i class="fa fa-eye"
+                                  aria-hidden="true"></i></i>
+                                detail
+                              </a>
+                            </td>
+                          @endif
+                        @endforeach
+                      </tr>
                     @endforeach
+
+
                   </tbody>
                 </table>
               </div>

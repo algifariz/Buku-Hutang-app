@@ -18,7 +18,8 @@
         <div class="row">
           <div class="col-12 ">
             <div class="card">
-              <form class="d-flex justify-content-center flex-column" action="{{ url('/simpan-hutang') }}" method="POST">
+              <form class="d-flex justify-content-center flex-column" action="/edit-data-pembayaran/{{ $data_hutang->id }}"
+                method="POST">
                 @csrf
                 @method('POST')
                 <div class="col-12">
@@ -28,24 +29,23 @@
                   <div class="card-body col-8 mx-auto">
                     <div class="form-group">
                       <label>Kode Pelanggan</label>
+                      <input type="text" name="kode_pelanggan" class="form-control" required=""
+                        value="{{ $data_hutang->kode_pelanggan }}" readonly>
 
-
-
-
-
-                      <input type="text" name="kode_pelanggan" class="form-control" required="" readonly>
                     </div>
                     <div class="form-group">
                       <label>Nama</label>
-                      <input type="text" name="nama_pelanggan" class="form-control" required="">
+                      <input type="text" name="nama_pelanggan" class="form-control" required=""
+                        value="{{ $data_hutang->nama_pelanggan }}" readonly>
                     </div>
                     <div class="form-group">
                       <label>Jumlah Hutang</label>
-                      <input type="text" name="jumlah_hutang" class="form-control" required="">
+                      <input type="text" name="jumlah_hutang" class="form-control" required=""
+                        value="{{ $data_hutang->jumlah_hutang }}">
                     </div>
                   </div>
                   <div class="card-footer text-right">
-                    <button class="btn btn-primary">Submit</button>
+                    <button class="btn btn-primary" type="submit" value="update">Submit</button>
                   </div>
               </form>
             </div>

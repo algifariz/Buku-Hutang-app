@@ -10,7 +10,8 @@ class PembayaranController extends Controller
     public function index()
     {
         $title = 'Data Pembayaran';
-        $data_hutang = Hutang::all();
+        // $data_hutang = Hutang::get()->groupBy('nama_pelanggan');
+        $data_hutang = Hutang::where('status', 'Belum Lunas')->get()->groupBy('nama_pelanggan');
         $data = [
             'data_hutang' => $data_hutang,
             'type_menu' => 'data-pembayaran',
@@ -44,15 +45,25 @@ class PembayaranController extends Controller
     }
 
     //edit data hutang
-    public function edit()
+    public function edit($id)
     {
-        $title = 'Edit Data pembayaran';
-        $data_hutang  = Hutang::all();
+        $title = 'Edit Data Pembayaran';
+        $data_hutang = Hutang::find($id);
         $data = [
-            'type_menu' => 'edit-data-pembayaran',
             'data_hutang' => $data_hutang,
+            'type_menu' => 'data-pembayaran',
             'title' => $title,
         ];
-        return view('pages.edit-data-pembayaran', $data);
+
+        return view('pages/edit-data-pembayaran', compact(['data_hutang']), $data);
+    }
+
+    //update data hutang
+    public function update($id, Request $request)
+    {
+        $data_hutang = Hutang::find($id);
+        $data_hutang->update($request->all());
+
+        return redirect()->route('data-pembayaran')->with('success', 'Data hutang berhasil diupdate');
     }
 }

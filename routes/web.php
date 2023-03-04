@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Hutang;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,15 @@ Route::redirect('/', '/dashboard-general-dashboard');
 
 // Dashboard
 Route::get('/dashboard-general-dashboard', function () {
-    return view('pages.dashboard-general-dashboard', ['type_menu' => 'dashboard']);
+    $data_hutang = Hutang::where('status', 'Belum Lunas')->get()->groupBy('nama_pelanggan')->map(function ($item) {
+        return $item->sum('jumlah_hutang');
+    });
+
+    $data = [
+        'type_menu' => 'dashboard',
+        'data_hutang' => $data_hutang,
+    ];
+    return view('pages.dashboard-general-dashboard', $data);
 });
 Route::get('/dashboard-ecommerce-dashboard', function () {
     return view('pages.dashboard-ecommerce-dashboard', ['type_menu' => 'dashboard']);
@@ -34,4 +43,5 @@ Route::delete('/hapus-hutang/{id}', [App\Http\Controllers\HutangController::clas
 Route::get('/data-pembayaran', [App\Http\Controllers\PembayaranController::class, 'index'])->name('data-pembayaran');
 Route::get('/detail-pembayaran/{nama}', [App\Http\Controllers\PembayaranController::class, 'detail']);
 Route::patch('/bayar-hutang/{id}', [App\Http\Controllers\PembayaranController::class, 'bayar'])->name("bayar-hutang");
-Route::get('/edit-data-pembayaran', [App\Http\Controllers\PembayaranController::class, 'edit']);
+Route::get('/edit-data-pembayaran/{id}', [App\Http\Controllers\PembayaranController::class, 'edit']);
+Route::POST('/edit-data-pembayaran/{id}', [App\Http\Controllers\PembayaranController::class, 'update']);
