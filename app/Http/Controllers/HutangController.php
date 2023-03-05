@@ -53,7 +53,7 @@ class HutangController extends Controller
     //destroy data hutang
     public function destroy($id)
     {
-        
+
         Hutang::destroy($id);
         return redirect()->route('data-hutang')->with('success', 'Data hutang berhasil dihapus');
     }

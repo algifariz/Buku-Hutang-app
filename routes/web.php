@@ -18,6 +18,9 @@ Route::redirect('/', '/dashboard-general-dashboard');
 
 // Dashboard
 Route::get('/dashboard-general-dashboard', function () {
+    //hitung jumlah user jika ada nama user yang sama maka akan dihitung 1
+    $jumlah_user = Hutang::select('nama_pelanggan')->distinct()->count('nama_pelanggan');
+
     $data_hutang = Hutang::where('status', 'Belum Lunas')->get()->groupBy('nama_pelanggan')->map(function ($item) {
         return $item->sum('jumlah_hutang');
     });
@@ -25,8 +28,9 @@ Route::get('/dashboard-general-dashboard', function () {
     $data = [
         'type_menu' => 'dashboard',
         'data_hutang' => $data_hutang,
+        'jumlah_user' => $jumlah_user
     ];
-    return view('pages.dashboard-general-dashboard', $data);
+    return view('pages.dashboard-general-dashboard', $data)->with('jumlah_user', $jumlah_user);
 });
 Route::get('/dashboard-ecommerce-dashboard', function () {
     return view('pages.dashboard-ecommerce-dashboard', ['type_menu' => 'dashboard']);
