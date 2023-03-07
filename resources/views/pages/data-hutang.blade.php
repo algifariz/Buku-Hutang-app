@@ -41,7 +41,7 @@
                         <th scope="col">Nama</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">jumlah Hutang</th>
-                        <th scope="col">Status</th>
+
                         <th scope="col">Acton</th>
 
                       </tr>
@@ -54,13 +54,7 @@
                           <td>{{ $hutang->nama_pelanggan }}</td>
                           <td>{{ $hutang->tanggal }}</td>
                           <td>Rp {{ number_format($hutang->jumlah_hutang, 0, ',', '.') }}</td>
-                          <td>
-                            @if ($hutang->status == 'Lunas')
-                              <div class="badge badge-success">{{ $hutang->status }}</div>
-                            @else
-                              <div class="badge badge-danger">{{ $hutang->status }}</div>
-                            @endif
-                          </td>
+
                           <td>
                             <form action="/hapus-hutang/{{ $hutang->id }}" method="POST" class="d-inline">
                               @csrf

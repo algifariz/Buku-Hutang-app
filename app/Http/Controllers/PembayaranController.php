@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BayarHutang;
 use App\Models\Hutang;
 use Illuminate\Http\Request;
 
@@ -10,8 +11,7 @@ class PembayaranController extends Controller
     public function index()
     {
         $title = 'Data Pembayaran';
-        // $data_hutang = Hutang::get()->groupBy('nama_pelanggan');
-        $data_hutang = Hutang::where('status', 'Belum Lunas')->get()->groupBy('nama_pelanggan');
+        $data_hutang = Hutang::with('bayarHutang')->get()->groupBy('nama_pelanggan');
         $data = [
             'data_hutang' => $data_hutang,
             'type_menu' => 'data-pembayaran',
@@ -23,47 +23,43 @@ class PembayaranController extends Controller
     public function detail($nama)
     {
         $title = 'Detail Pembayaran';
-        $data_hutang = Hutang::where('nama_pelanggan', $nama)->where('status', 'Belum Lunas')->get();
+        $data_hutang = Hutang::where('nama_pelanggan', $nama)->get();
         $data = [
             'data_hutang' => $data_hutang,
             'type_menu' => 'data-pembayaran',
             'title' => $title,
         ];
-        return view('pages/detail-pembayaran', $data);
+        return view('pages.detail-pembayaran', $data);
     }
 
-    public function bayar(Request $request, $id)
+    public function bayarHutang($nama)
     {
-        $data = [
-            $request->all(),
-            'status' => 'Lunas',
-        ];
+        $title = 'Bayar Hutang';
+        $data_hutang = Hutang::with('bayarHutang')->where('nama_pelanggan', $nama)->get();
 
-        // update by id
-        Hutang::find($id)->update($data);
-        return redirect()->route('data-pembayaran')->with('success', 'Data hutang berhasil diupdate');
-    }
-
-    //edit data hutang
-    public function edit($id)
-    {
-        $title = 'Edit Data Pembayaran';
-        $data_hutang = Hutang::find($id);
         $data = [
             'data_hutang' => $data_hutang,
             'type_menu' => 'data-pembayaran',
             'title' => $title,
         ];
-
-        return view('pages/edit-data-pembayaran', compact(['data_hutang']), $data);
+        return view('pages.bayar-hutang', $data);
     }
 
-    //update data hutang
-    public function update($id, Request $request)
+    public function simpan(Request $request)
     {
-        $data_hutang = Hutang::find($id);
-        $data_hutang->update($request->all());
+        $request->validate([
+            'kode_pelanggan' => 'required',
+            'nama_pelanggan' => 'required',
+            'jumlah_bayar' => 'required',
+        ]);
 
-        return redirect()->route('data-pembayaran')->with('success', 'Data hutang berhasil diupdate');
+        $data = [
+            'kode_pelanggan' => $request->kode_pelanggan,
+            'nama_pelanggan' => $request->nama_pelanggan,
+            'jumlah_bayar' => $request->jumlah_bayar,
+        ];
+
+        BayarHutang::create($data);
+        return redirect()->route('data-pembayaran')->with('success', 'Data hutang berhasil ditambahkan');
     }
 }

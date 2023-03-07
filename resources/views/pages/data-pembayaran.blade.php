@@ -35,6 +35,7 @@
                       <th scope="col">Kode Pelanggan</th>
                       <th scope="col">Nama</th>
                       <th scope="col">Jumlah</th>
+                      <th>Status</th>
                       <th scope="col">action</th>
                     </tr>
                   </thead>
@@ -47,13 +48,28 @@
                           @if ($loop->first)
                             <td>{{ $item->kode_pelanggan }}</td>
                             <td>{{ $item->nama_pelanggan }}</td>
-                            <td>IDR {{ number_format($value->sum('jumlah_hutang'), 0, ',', '.') }}</td>
+                            @php
+                              $jumlah_hutang = $value->sum('jumlah_hutang');
+                              $jumlah_bayar = $item->bayarHutang->sum('jumlah_bayar');
+                            @endphp
+                            <td>IDR
+                              {{ number_format($jumlah_hutang - $jumlah_bayar, 0, ',', '.') }}
+                            </td>
                             <td>
+                              @if ($jumlah_hutang - $jumlah_bayar == 0)
+                                <div class="badge badge-success">Lunas</div>
+                              @else
+                                <div class="badge badge-danger">Belum Lunas</div>
+                              @endif
+                            </td>
+                            <td class="d-flex ">
                               <a href="/detail-pembayaran/{{ $item->nama_pelanggan }}"
-                                class="btn btn-icon icon-left btn-primary"><i class="fa fa-eye"
+                                class="btn btn-icon icon-left btn-primary mr-2"><i class="fa fa-eye"
                                   aria-hidden="true"></i></i>
                                 detail
                               </a>
+                              <a href="/bayar-hutang/{{ $item->nama_pelanggan }}" class="btn btn-warning mr-2">Bayar</a>
+                              {{-- <button type="submit" class="btn btn-success">Bayar Lunas</button> --}}
                             </td>
                           @endif
                         @endforeach

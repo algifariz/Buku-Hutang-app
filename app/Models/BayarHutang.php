@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Hutang extends Model
+class BayarHutang extends Model
 {
     use HasFactory;
-
-    protected $table = 'data_hutang';
+    protected $table = 'data_bayar';
     protected $fillable = [
         'kode_pelanggan',
         'nama_pelanggan',
-        'tanggal',
-        'jumlah_hutang',
+        'jumlah_bayar',
     ];
 
-    public function bayarHutang()
+    public function hutang()
     {
-        return $this->hasMany(BayarHutang::class, 'kode_pelanggan', 'kode_pelanggan');
+        return $this->belongsTo(Hutang::class, 'kode_pelanggan', 'kode_pelanggan');
     }
 }

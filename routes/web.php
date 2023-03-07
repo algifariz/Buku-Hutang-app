@@ -21,7 +21,7 @@ Route::get('/dashboard-general-dashboard', function () {
     //hitung jumlah user jika ada nama user yang sama maka akan dihitung 1
     $jumlah_user = Hutang::select('nama_pelanggan')->distinct()->count('nama_pelanggan');
 
-    $data_hutang = Hutang::where('status', 'Belum Lunas')->get()->groupBy('nama_pelanggan')->map(function ($item) {
+    $data_hutang = Hutang::get()->groupBy('nama_pelanggan')->map(function ($item) {
         return $item->sum('jumlah_hutang');
     });
 
@@ -40,12 +40,10 @@ Route::get('/dashboard-ecommerce-dashboard', function () {
 Route::get('/data-hutang', [App\Http\Controllers\HutangController::class, 'index'])->name('data-hutang');
 Route::get('/tambah-data-hutang', [App\Http\Controllers\HutangController::class, 'tambah']);
 Route::post('/simpan-hutang', [App\Http\Controllers\HutangController::class, 'simpan']);
-
 Route::delete('/hapus-hutang/{id}', [App\Http\Controllers\HutangController::class, 'destroy']);
 
 //data pembayaran
 Route::get('/data-pembayaran', [App\Http\Controllers\PembayaranController::class, 'index'])->name('data-pembayaran');
 Route::get('/detail-pembayaran/{nama}', [App\Http\Controllers\PembayaranController::class, 'detail']);
-Route::patch('/bayar-hutang/{id}', [App\Http\Controllers\PembayaranController::class, 'bayar'])->name("bayar-hutang");
-Route::get('/edit-data-pembayaran/{id}', [App\Http\Controllers\PembayaranController::class, 'edit']);
-Route::POST('/edit-data-pembayaran/{id}', [App\Http\Controllers\PembayaranController::class, 'update']);
+Route::get('/bayar-hutang/{nama}', [App\Http\Controllers\PembayaranController::class, 'bayarHutang'])->name("bayar-hutang");
+Route::post('/simpan-pembayaran', [App\Http\Controllers\PembayaranController::class, 'simpan']);

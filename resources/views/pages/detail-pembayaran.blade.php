@@ -39,8 +39,7 @@
                         <th scope="col">Nama</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">jumlah Hutang</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">action</th>
+
 
                       </tr>
                     </thead>
@@ -53,29 +52,7 @@
                           <td>{{ $hutang->tanggal }}</td>
                           <td>Rp {{ number_format($hutang->jumlah_hutang, 0, ',', '.') }}</td>
 
-                          <td>
-                            @if ($hutang->status == 'Lunas')
-                              <div class="badge badge-success">{{ $hutang->status }}</div>
-                            @else
-                              <div class="badge badge-danger">{{ $hutang->status }}</div>
-                            @endif
-                          </td>
-                          </td>
 
-                          <td>
-                            <form action="{{ route('bayar-hutang', $hutang->id) }}" method="post">
-                              @csrf
-                              @method('patch')
-                              <input type="hidden" name="id" value="{{ $hutang->id }}">
-                              <input type="hidden" name="kode_pelanggan" value="{{ $hutang->kode_pelanggan }}">
-                              <input type="hidden" name="nama_pelanggan" value="{{ $hutang->nama_pelanggan }}">
-                              <input type="hidden" name="tanggal" value="{{ $hutang->tanggal }}">
-                              <input type="hidden" name="jumlah_hutang" value="{{ $hutang->jumlah_hutang }}">
-                              <a href="/edit-data-pembayaran/{{ $hutang->id }}" class="btn btn-warning">Bayar</a>
-                              <button type="submit" class="btn btn-primary">Bayar Lunas</button>
-                            </form>
-
-                          </td>
                         </tr>
                       @endforeach
                     </tbody>
@@ -97,7 +74,7 @@
                         <th></th>
                         <th>
                           <h3>Rp
-                            {{ number_format($data_hutang->where('nama_pelanggan', $hutang->nama_pelanggan)->where('status', 'Belum Lunas')->sum('jumlah_hutang'),0,',','.') }}
+                            {{ number_format($data_hutang->where('nama_pelanggan', $hutang->nama_pelanggan)->sum('jumlah_hutang'), 0, ',', '.') }}
                           </h3>
                         </th>
 
